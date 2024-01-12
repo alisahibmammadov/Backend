@@ -22,7 +22,7 @@ router.get("/:pid", (req, res, next) => {
     return p.creator === placeId;
   });
   if (!place) {
-    return new HttpError("Could find a place for the provided id!", 404);
+    throw new HttpError("Could find a place for the provided id!", 404);
   }
   res.json({ place });
 });
