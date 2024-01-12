@@ -25,13 +25,10 @@ const getPlaceById = (req, res, next) => {
   }
   res.json({ place });
 };
-const getPlaceByUserId = (req, res, next) => {
-  console.log("salam");
+const getPlacesByUserId = (req, res, next) => {
   const userId = req.params.uid;
-  console.log(userId);
 
-  const user = DUMMY_PLACES.find((u) => {
-    console.log(u);
+  const user = DUMMY_PLACES.filter((u) => {
     return u.creator === userId;
   });
   if (!user) {
@@ -67,11 +64,11 @@ const updatePlace = (req, res, next) => {
 const deletePlace = (req, res, next) => {
   const placeId = req.params.pid;
   DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeId);
-  res.status(200).json({message:"Deleted place!"})
+  res.status(200).json({ message: "Deleted place!" });
 };
 
 exports.getPlaceById = getPlaceById;
-exports.getPlaceByUserId = getPlaceByUserId;
+exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
 exports.deletePlace = deletePlace;
