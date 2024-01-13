@@ -9,7 +9,7 @@ router.post(
   "/",
   [
     check("title").not().isEmpty(),
-    check("description").length({ min: 5 }),
+    check("description").isLength({ min: 5 }),
     check("address").not().isEmpty(),
   ],
   placesControllers.createPlace
@@ -17,7 +17,7 @@ router.post(
 
 router.patch(
   "/:pid",
-  [check("").not().isEmpty(), check("description").length({ min: 5 })],
+  [check("").not().isEmpty(), check("description").isLength({ min: 5 })],
   placesControllers.updatePlace
 );
 router.delete("/:pid", placesControllers.deletePlace);

@@ -9,7 +9,7 @@ router.post(
   [
     check("name").not().isEmpty(),
     check("email").normalizeEmail().isEmail(),
-    check("password").length({ min: 6 }),
+    check("password").isLength({ min: 6 }),
   ],
   usersControllers.signup
 );
