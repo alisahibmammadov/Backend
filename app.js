@@ -27,9 +27,10 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://alisahib:alisahib@cluster0.hpksjxu.mongodb.net/places"
+    "mongodb+srv://alisahib:alisahib@cluster0.hpksjxu.mongodb.net/places?retryWrites=true&w=majority"
   )
   .then(() => {
+    console.log("Connected MongoDB");
     app.listen(5000);
   })
   .catch((err) => console.log(err));
