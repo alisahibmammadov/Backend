@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 const { validationResult } = require("express-validator");
 const { HttpError } = require("../models/http-error");
 const User = require("../models/user");
+const place = require("../models/place");
 
 let DUMMY_USERS = [
   {
@@ -12,8 +13,18 @@ let DUMMY_USERS = [
   },
 ];
 
-const getUsers = (req, res, next) => {
-  res.json({ users: DUMMY_USERS });
+const getUsers = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, "-password");
+  } catch (err) {
+    const error = new HttpError(
+      "fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
 const signup = async (req, res, next) => {
@@ -21,7 +32,7 @@ const signup = async (req, res, next) => {
   if (!errors.isEmpty()) {
     next(new HttpError("Invalid inputs passed, please check your data.", 422));
   }
-  const { name, email, password, place } = req.body;
+  const { name, email, password } = req.body;
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -44,6 +55,7 @@ const signup = async (req, res, next) => {
     email,
     image: "URL",
     password,
+    place: [],
   });
 
   try {
